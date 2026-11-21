@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fixture: regional sales</title>
+  <style>
+    body { font: 15px system-ui, sans-serif; margin: 24px; max-width: 720px; }
+    table { border-collapse: collapse; margin: 0 0 28px; width: 100%; }
+    th, td { border: 1px solid #c9ced8; padding: 6px 10px; text-align: left; }
+    th { background: #eef2f8; }
+    caption { text-align: left; font-weight: 600; padding: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Regional sales</h1>
+  <p>Fixture page for the unit tests and the browser smoke test. Data is made up.</p>
+
+  <table id="sales">
+    <caption>Quarterly sales by region</caption>
+    <thead>
+      <tr><th rowspan="2">Region</th><th colspan="2">2024</th><th rowspan="2">Growth[1]</th></tr>
+      <tr><th>Q1</th><th>Q2</th></tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="2">North</td><td>$1,200.50</td><td>$1,350.00</td><td>12.5%</td></tr>
+      <tr><td>$980</td><td>($45.25)</td><td>-3.2%</td></tr>
+      <tr><td>South</td><td>$2,010</td><td>$2,400.75</td><td>19.4%</td></tr>
+      <tr><td colspan="4">=HYPERLINK("http://example.test","click")</td></tr>
+    </tbody>
+  </table>
+
+  <table id="staff">
+    <tr><th>Name</th><th>Employee ID</th><th>Notes</th></tr>
+    <tr><td>Ada Lovelace</td><td>007</td><td>Starts <b>May</b><br>1</td></tr>
+    <tr><td>Grace Hopper</td><td>0123</td><td>Team lead, "acting"</td></tr>
+  </table>
+
+  <table id="layout"><tr><td>just a layout cell</td></tr></table>
+  <table id="hidden" style="display:none"><tr><th>a</th><th>b</th></tr><tr><td>1</td><td>2</td></tr></table>
+</body>
+</html>

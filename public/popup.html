@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Table Export</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header><h1>Table Export</h1><p>Highlights tables on this page. Nothing leaves your browser.</p></header>
+  <p id="empty" hidden><span id="empty-text">No tables found on this page.</span></p>
+  <main id="main">
+    <ul id="tables" aria-label="Tables on this page"></ul>
+    <fieldset>
+      <legend>Options</legend>
+      <label><input type="checkbox" id="opt-numbers" checked> Clean numbers ($1,200, (50), 12%)</label>
+      <label><input type="checkbox" id="opt-fill" checked> Repeat values in merged cells</label>
+      <label><input type="checkbox" id="opt-formulas" checked> Neutralize leading = + - @ in text</label>
+    </fieldset>
+    <section aria-label="Preview">
+      <table id="preview-table"><tbody id="preview"></tbody></table>
+      <p id="preview-note" class="note"></p>
+    </section>
+    <div class="actions">
+      <button id="btn-csv" class="action" disabled>Download CSV</button>
+      <button id="btn-xlsx" class="action" disabled>Download XLSX</button>
+      <button id="btn-copy" class="action secondary" disabled>Copy for Excel</button>
+    </div>
+    <p id="status" role="status"></p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

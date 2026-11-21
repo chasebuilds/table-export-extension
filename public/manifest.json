@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Table Export",
+  "version": "0.1.0",
+  "description": "Find tables on a page, export one to CSV or XLSX, or copy it for Excel. Everything runs in your browser.",
+  "minimum_chrome_version": "102",
+  "permissions": ["activeTab", "scripting", "downloads"],
+  "action": {
+    "default_title": "Export a table from this page",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+  },
+  "icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
+}
