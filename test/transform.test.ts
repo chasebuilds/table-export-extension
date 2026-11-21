@@ -38,7 +38,7 @@ describe("parseNumber", () => {
     expect(parseNumber("0.1%")).toEqual({ v: 0.001, pct: 1 });
   });
 
-  it.each(["", "abc", "007", "0123", "12-34", "1,23", "1.2.3", "12345678901234567", "N/A", "10 items", "—"])(
+  it.each(["", "abc", "007", "0123", "12-34", "1,23", "1.2.3", "12345678901234567", "N/A", "10 items", String.fromCharCode(0x2014)])(
     "leaves %j as text",
     (text) => {
       expect(parseNumber(text)).toBeNull();
