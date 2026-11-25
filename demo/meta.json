@@ -1,0 +1,7 @@
+{
+  "title": "Table Export Extension: Export web tables to CSV or XLSX | Chase Builds",
+  "description": "Chrome and Edge extension that finds tables on a web page and exports one to CSV or XLSX, or copies it as TSV. Try its export code here. No data leaves it.",
+  "url": "https://chasebuilds.github.io/table-export-extension/",
+  "image": "docs/demo.png",
+  "repo": "table-export-extension"
+}

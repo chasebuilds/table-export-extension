@@ -30,6 +30,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Page title, description and share preview
+        run: python demo/page_meta.py _site
       - run: python -m pip install playwright==1.49.1 openpyxl
       - run: python -m playwright install --with-deps chromium
       - name: Export the sample tables in headless Chromium and check the files
