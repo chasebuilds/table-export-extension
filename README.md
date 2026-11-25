@@ -2,9 +2,11 @@
 
 [![ci](https://github.com/chasebuilds/table-export-extension/actions/workflows/ci.yml/badge.svg)](https://github.com/chasebuilds/table-export-extension/actions/workflows/ci.yml) ![Manifest V3](https://img.shields.io/badge/manifest-v3-blue) ![TypeScript strict](https://img.shields.io/badge/typescript-strict-blue) [![MIT license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-A Chrome and Edge extension that finds the tables on the page you are looking at, outlines them, and exports the one you pick to CSV or XLSX. A third button copies it as tab-separated text so it pastes straight into Excel or Google Sheets.
+**[Live demo: try it in your browser](https://chasebuilds.github.io/table-export-extension/)**. Export the sample tables to CSV or XLSX, or copy them as TSV, using the extension's own code on the page. No install needed to try it.
 
-![The fixture page with two outlined tables on the left, the popup with a preview and the export buttons on the right](docs/preview.png)
+[![The live demo: three sample tables outlined, the export panel with a cleaned preview](docs/demo.png)](https://chasebuilds.github.io/table-export-extension/)
+
+A Chrome and Edge extension that finds the tables on the page you are looking at, outlines them, and exports the one you pick to CSV or XLSX. A third button copies it as tab-separated text so it pastes straight into Excel or Google Sheets.
 
 ## What it does
 
@@ -14,6 +16,8 @@ A Chrome and Edge extension that finds the tables on the page you are looking at
 - **Number cleanup** (can be switched off): `$1,200.50` becomes `1200.5`, `(45.25)` becomes `-45.25`, `1.234,56` becomes `1234.56`, `12.5%` stays `12.5%` in CSV and TSV and becomes a real percent-formatted number in XLSX. Anything else stays text. Ids with leading zeros (`007`) and numbers with more than 15 digits stay text so they are not damaged.
 - **Formula guard:** text that starts with `=`, `+`, `-` or `@` gets a leading apostrophe in CSV and TSV, so a scraped cell cannot run as a formula when you open the file. XLSX stores such text as a plain string. You can turn this off.
 - CSV is RFC 4180 with CRLF line ends and a UTF-8 byte order mark so Excel reads accents correctly.
+
+![The fixture page with two outlined tables on the left, the popup with a preview and the export buttons on the right](docs/preview.png)
 
 ## Install (unpacked)
 

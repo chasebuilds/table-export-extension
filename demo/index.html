@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>table-export-extension | Live demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --wall: #cdb9a3; --wall-2: #e9ddcf; --floor: #b89a80; --glow: #fff6e6; --wood: #6b4a33; --wood-2: #8a6447;
+  --ink: #2a2019; --ink-2: rgba(42, 32, 25, .62); --ink-3: rgba(42, 32, 25, .38);
+  --glass: rgba(255, 250, 244, .22); --glass-edge: rgba(255, 255, 255, .55); --card: rgba(255, 252, 248, .55); --solidcard: rgba(255, 252, 248, .86);
+  --shadow: rgba(70, 40, 20, .22); --me: #e2583a; --good: #1f9a72; --bad: #c8452c; --warn: #a8670f;
+  --solid: #2a2019; --solid-fg: #fbf5ee;
+  --f-ui: "Onest", "Segoe UI", system-ui, sans-serif; --f-num: "Geist Mono", ui-monospace, "Cascadia Mono", monospace;
+  --r-lg: 28px; --r-md: 18px; --r-pill: 999px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --wall: #2a1f19; --wall-2: #3b2c22; --floor: #241a14; --glow: #ffb867; --wood: #1d140e; --wood-2: #33241a;
+    --ink: #f6ece2; --ink-2: rgba(246, 236, 226, .66); --ink-3: rgba(246, 236, 226, .38);
+    --glass: rgba(34, 24, 18, .34); --glass-edge: rgba(255, 255, 255, .14); --card: rgba(48, 36, 28, .58); --solidcard: rgba(40, 30, 23, .9);
+    --shadow: rgba(0, 0, 0, .45); --me: #ff7a55; --good: #4fd1a1; --bad: #ff8a6a; --warn: #f0b45a;
+    --solid: #f6ece2; --solid-fg: #2a2019; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box }
+body { margin: 0; min-height: 100vh; background: var(--wall); color: var(--ink); font-family: var(--f-ui); font-size: 14px; line-height: 1.5 }
+.room { position: fixed; inset: 0; z-index: -1; overflow: hidden;
+  background: radial-gradient(60% 50% at 78% 18%, var(--glow), transparent 70%), linear-gradient(180deg, var(--wall-2) 0%, var(--wall) 62%, var(--floor) 62.2%, var(--floor) 100%) }
+.room i { position: absolute; display: block }
+.room .panel { left: 0; top: 0; width: 13%; height: 70%; background: repeating-linear-gradient(90deg, var(--wood) 0 18px, var(--wood-2) 18px 22px) }
+.room .shelf { right: 6%; top: 8%; width: 30%; height: 46%; border-radius: 6px; background: linear-gradient(180deg, var(--wood-2), var(--wood)) }
+.room .lamp { left: 26%; top: 18%; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 65%) }
+.glass { background: var(--glass); -webkit-backdrop-filter: blur(26px) saturate(150%); backdrop-filter: blur(26px) saturate(150%);
+  border: 1px solid var(--glass-edge); box-shadow: inset 0 1px 0 var(--glass-edge), 0 24px 60px -20px var(--shadow) }
+.card { background: var(--card); border: 1px solid var(--glass-edge); border-radius: var(--r-md) }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px 8px 18px; border-radius: var(--r-pill); margin-bottom: 18px }
+.brand { font-weight: 600; font-size: 13px }
+.pill { display: inline-block; padding: 6px 14px; border-radius: var(--r-pill); background: var(--card); border: 1px solid var(--glass-edge); color: var(--ink); text-decoration: none; font-size: 13px }
+.stage { border-radius: var(--r-lg); padding: 24px }
+h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em }
+.tag { color: var(--ink-2); margin: 0 0 16px }
+.private { display: inline-block; font-size: 12px; padding: 4px 12px; border-radius: var(--r-pill); background: var(--card); border: 1px solid var(--glass-edge); color: var(--good); font-weight: 500 }
+#inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 18px 0 12px }
+.drop { display: flex; flex-direction: column; gap: 4px; padding: 18px; cursor: pointer; border-style: dashed; min-height: 92px; justify-content: center }
+.drop.over, .drop.has { border-style: solid; border-color: var(--me) }
+.drop-label { font-weight: 600 }
+.drop-file { color: var(--ink-2); font-size: 13px; overflow-wrap: anywhere }
+#options { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 6px 0 16px }
+.opt { display: flex; align-items: center; gap: 6px; font-size: 13px }
+.opt input[type=text], .opt select { font: inherit; padding: 5px 10px; border-radius: 10px; border: 1px solid var(--glass-edge); background: var(--solidcard); color: var(--ink) }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+button.run { font: inherit; font-weight: 600; padding: 10px 20px; border-radius: var(--r-pill); border: 1px solid var(--glass-edge); cursor: pointer; background: var(--card); color: var(--ink) }
+button.run.primary { background: var(--solid); color: var(--solid-fg) }
+button.run:disabled { opacity: .45; cursor: wait }
+#status { font-size: 13px; color: var(--ink-2) }
+#status[data-kind=ok] { color: var(--good) } #status[data-kind=bad] { color: var(--bad) } #status[data-kind=busy] { color: var(--warn) }
+.note { color: var(--ink-2); font-size: 13px; margin: 12px 0 0 }
+#results { margin-top: 20px }
+.results-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px }
+#download { background: var(--me); color: #fff; border: 0; font-weight: 600 }
+pre#log { font-family: var(--f-num); font-size: 12.5px; padding: 14px; margin: 0 0 14px; white-space: pre-wrap; overflow-wrap: anywhere }
+#tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px }
+.tab { font: inherit; font-size: 13px; padding: 6px 14px; border-radius: var(--r-pill); border: 1px solid var(--glass-edge); background: var(--card); color: var(--ink); cursor: pointer }
+.tab.on { background: var(--solid); color: var(--solid-fg) }
+.tablewrap { overflow: auto; max-height: 520px; background: var(--solidcard) }
+table { border-collapse: collapse; font-size: 12.5px; width: 100% }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--glass-edge); white-space: nowrap; max-width: 340px; overflow: hidden; text-overflow: ellipsis }
+th { position: sticky; top: 0; background: var(--solidcard); font-weight: 600; z-index: 1 }
+#more, #source { color: var(--ink-3); font-size: 12px; margin: 8px 0 0 }
+footer { text-align: center; color: var(--ink-3); font-size: 12px; margin-top: 22px }
+@media (max-width: 600px) { .stage { padding: 18px } h1 { font-size: 22px } }
+
+h2 { font-size: 18px; margin: 26px 0 8px }
+#samples table { background: var(--solidcard); border-radius: 12px; overflow: hidden; margin: 0 0 18px; outline-offset: 2px }
+#samples table.found { outline: 2px solid #3b82f6 }
+#samples table.picked { outline: 3px solid #f97316 }
+#samples caption { text-align: left; font-weight: 600; padding: 4px 0; caption-side: top }
+#samples th, #samples td { border: 1px solid var(--glass-edge) }
+.panel { padding: 18px; margin-top: 8px }
+#tables { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 }
+#preview td.num { text-align: right; font-family: var(--f-num) }
+pre#tsv-out { font-family: var(--f-num); font-size: 12px; padding: 12px; white-space: pre; overflow: auto; margin: 10px 0 0 }
+ol li { margin: 4px 0 }
+.layout td { outline: none; border: 0 !important }
+</style>
+</head>
+<body>
+<div class="room" aria-hidden="true"><i class="panel"></i><i class="shelf"></i><i class="lamp"></i></div>
+<div class="wrap">
+  <nav class="bar glass"><span class="brand">Chase Builds</span><a class="pill" href="https://github.com/chasebuilds/table-export-extension">Source on GitHub</a></nav>
+  <main class="stage glass">
+    <h1>table-export-extension</h1>
+    <p class="tag">A Chrome and Edge extension that exports any table on a web page to CSV or XLSX, or copies it as tab-separated text for Excel and Google Sheets. This page runs the extension's own export code on the sample tables below, so you can try it without installing anything.</p>
+    <span class="private">Nothing leaves this page. Files are made in your browser and saved by you.</span>
+
+    <h2>Export a table</h2>
+    <p class="note" id="found"></p>
+    <div class="panel card">
+      <div id="tables"></div>
+      <div id="options">
+        <label class="opt"><input type="checkbox" id="opt-numbers" checked> <span>Clean numbers ($1,200.50 to 1200.5)</span></label>
+        <label class="opt"><input type="checkbox" id="opt-fill" checked> <span>Repeat merged cells</span></label>
+        <label class="opt"><input type="checkbox" id="opt-formulas" checked> <span>Guard against formulas</span></label>
+      </div>
+      <div class="actions">
+        <button class="run primary" id="csv">Download CSV</button>
+        <button class="run" id="xlsx">Download XLSX</button>
+        <button class="run" id="tsv">Copy as TSV</button>
+        <span id="status" role="status"></span>
+      </div>
+      <p class="note">Preview of the export:</p>
+      <div class="tablewrap card"><table><tbody id="preview"></tbody></table></div>
+      <details><summary class="note">Tab-separated text that Copy puts on the clipboard</summary><pre id="tsv-out" class="card"></pre></details>
+    </div>
+
+    <h2>Sample tables (synthetic)</h2>
+    <div id="samples">
+      <table>
+        <caption>Quarterly sales by region</caption>
+        <thead>
+          <tr><th rowspan="2">Region</th><th colspan="2">2025</th><th rowspan="2">Growth[1]</th></tr>
+          <tr><th>Q1</th><th>Q2</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="2">North</td><td>$1,200.50</td><td>$1,350.00</td><td>12.5%</td></tr>
+          <tr><td>$980</td><td>($45.25)</td><td>-3.2%</td></tr>
+          <tr><td>South</td><td>$2,010</td><td>$2,400.75</td><td>19.4%</td></tr>
+          <tr><td colspan="4">=HYPERLINK("http://example.test","click me")</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <caption>Parts in stock</caption>
+        <tr><th>Part no.</th><th>Description</th><th>Unit price (EUR)</th><th>On hand</th></tr>
+        <tr><td>007</td><td>Hinge, brass</td><td>1.234,56</td><td>14</td></tr>
+        <tr><td>0123</td><td>Bracket, "heavy duty"</td><td>12,90</td><td>220</td></tr>
+        <tr><td>4410</td><td>Bolt M8<br>pack of 50</td><td>8,05</td><td>3</td></tr>
+      </table>
+      <table>
+        <caption>Support tickets</caption>
+        <tr><th>Ticket</th><th>Opened</th><th>Customer</th><th>Total*</th></tr>
+        <tr><td>T-1001</td><td>2026-11-02</td><td>Harbor Coffee</td><td>@SUM(1,2)</td></tr>
+        <tr><td>T-1002</td><td>2026-11-05</td><td>Granite Tools</td><td>+44 20 7946 0000</td></tr>
+        <tr><td>T-1003</td><td>2026-11-09</td><td>Fern Hollow Farm</td><td>1234567890123456789</td></tr>
+      </table>
+      <table class="layout"><tr><td>A one-cell layout table, which the extension ignores.</td></tr></table>
+      <table style="display:none"><tr><th>hidden</th><th>table</th></tr><tr><td>1</td><td>2</td></tr></table>
+    </div>
+
+    <h2>Install the extension</h2>
+    <ol>
+      <li>Download <code>table-export-extension-v0.1.0.zip</code> from the <a href="https://github.com/chasebuilds/table-export-extension/releases/latest">latest release</a> and unzip it.</li>
+      <li>Open <code>chrome://extensions</code> (or <code>edge://extensions</code>) and turn on <strong>Developer mode</strong>.</li>
+      <li>Choose <strong>Load unpacked</strong> and select the unzipped folder.</li>
+      <li>Open any page with a table and click the toolbar icon. Tables are outlined in blue; the one you pick turns orange.</li>
+    </ol>
+    <p class="note">It asks only for <code>activeTab</code>, <code>scripting</code> and <code>downloads</code>. No host permissions, no network requests, no stored data.</p>
+  </main>
+  <footer>The same TypeScript modules as the extension (src/parse.ts, src/transform.ts, src/format.ts), bundled for this page with esbuild.</footer>
+</div>
+<script src="demo.js"></script>
+</body>
+</html>
