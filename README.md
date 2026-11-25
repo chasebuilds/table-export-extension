@@ -91,3 +91,11 @@ e2e/               Playwright smoke test and harness
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## More from Chase Builds
+
+- **[csv-combine-split](https://github.com/chasebuilds/csv-combine-split)**: Combine a folder of files with aligned columns, or split a big file. ([live demo](https://chasebuilds.github.io/csv-combine-split/))
+- **[pdf-qa-local](https://github.com/chasebuilds/pdf-qa-local)**: Ask questions about your PDFs with AI that runs on your own computer, so documents never leave the office.
+- **[pc-build-planner](https://github.com/chasebuilds/pc-build-planner)**: A parts list for an office or CAD workstation where every part fits. ([live demo](https://chasebuilds.github.io/pc-build-planner/))
+
+[All projects, sorted by industry](https://github.com/chasebuilds) · [chasebuilds.github.io](https://chasebuilds.github.io)
